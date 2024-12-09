@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -10,18 +9,12 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        Map<Integer, ICalculator> calculatorMap = new HashMap<>();
-
-        ICalculator addition = (double a, double b) -> a + b;
-        ICalculator subtraction = (double a, double b) -> a - b;
-        ICalculator multiplication = (double a, double b) -> a * b;
-        ICalculator division = (double a, double b) -> a / b;
-
-
-        calculatorMap.put(1, addition);
-        calculatorMap.put(2, subtraction);
-        calculatorMap.put(3, multiplication);
-        calculatorMap.put(4, division);
+        Map<Integer, ICalculator> calculatorMap = Map.of(
+                0, (double a, double b) -> a + b,
+                1, (double a, double b) -> a - b,
+                2, (double a, double b) -> a * b,
+                3, (double a, double b) -> b != 0 ? a / b : Double.NaN
+        );
 
         Consumer<String> MenuAffichage = message -> {
             System.out.println("\nQuel calcul voulez vous ?");
@@ -32,14 +25,14 @@ public class Main {
             System.out.println("0. Exit");
         };
 
-        while (true){
+        while (true) {
             MenuAffichage.accept("Menu Affichage");
             int option = sc.nextInt();
-            if (option == 0){
+            if (option == 0) {
                 break;
             }
 
-            if (!calculatorMap.containsKey(option)){
+            if (!calculatorMap.containsKey(option)) {
                 System.out.println("Erreur choix invalide");
                 continue;
             }
@@ -51,10 +44,10 @@ public class Main {
             Double b = sc.nextDouble();
 
             ICalculator operate = calculatorMap.get(option);
-            double resultat = operate.calculator(a,b);
+            double resultat = operate.calculator(a, b);
 
 
-            if(Double.isNaN(resultat) || Double.isInfinite(resultat)){
+            if (Double.isNaN(resultat) || Double.isInfinite(resultat)) {
                 System.out.println("Erreur: Division par 0");
             } else {
                 System.out.println("Résultat: " + resultat);
